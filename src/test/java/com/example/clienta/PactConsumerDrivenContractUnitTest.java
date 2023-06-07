@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @PactTestFor(providerName = "server", hostInterface = "localhost")
 public class PactConsumerDrivenContractUnitTest {
 
-    @Pact(provider = "server", consumer = "client_b")
+    @Pact(provider = "server", consumer = "client_a")
     public RequestResponsePact createPact(PactDslWithProvider builder) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -36,12 +36,12 @@ public class PactConsumerDrivenContractUnitTest {
                 .willRespondWith()
                     .status(200)
                     .headers(headers)
-                    .body("{\"condition\": true, \"name\": \"tom\"}")
+                    .body("{\"condition\": true, \"surname\": \"tom\"}")
                 .given("test POST")
                     .uponReceiving("POST REQUEST")
                     .method("POST")
                     .headers(headers)
-                    .body("{\"name\": \"Michael\"}")
+                    .body("{\"surname\": \"Doe\"}")
                     .path("/pact")
                     .willRespondWith()
                     .status(201)
@@ -57,12 +57,12 @@ public class PactConsumerDrivenContractUnitTest {
         // then
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getHeaders().get("Content-Type").contains("application/json")).isTrue();
-        assertThat(response.getBody()).contains("condition", "true", "name", "tom");
+        assertThat(response.getBody()).contains("condition", "true", "surname", "doe");
 
         // and
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        String jsonBody = "{\"name\": \"Michael\"}";
+        String jsonBody = "{\"surname\": \"Doe\"}";
 
         // when
         ResponseEntity<String> postResponse = new RestTemplate().exchange(mockServer.getUrl() + "/pact", HttpMethod.POST, new HttpEntity<>(jsonBody, httpHeaders), String.class);
