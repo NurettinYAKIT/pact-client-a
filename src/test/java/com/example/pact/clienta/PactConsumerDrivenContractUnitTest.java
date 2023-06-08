@@ -1,4 +1,4 @@
-package com.example.clienta;
+package com.example.pact.clienta;
 
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
@@ -36,7 +36,7 @@ public class PactConsumerDrivenContractUnitTest {
                 .willRespondWith()
                     .status(200)
                     .headers(headers)
-                    .body("{\"condition\": true, \"surname\": \"tom\"}")
+                    .body("{\"condition\": true, \"surname\": \"doe\"}")
                 .given("test POST")
                     .uponReceiving("POST REQUEST")
                     .method("POST")
